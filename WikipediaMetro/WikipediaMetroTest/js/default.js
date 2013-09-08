@@ -1164,21 +1164,26 @@
                 $lis.each(function () {
                     var $li = $(this),
                         txt = stripHtmlTags($li.html()),
-                        $link = $li.find('b a'),
-                        title = extractWikiTitle($link.attr('href') + '');
-                    var bits = txt.split(' – '),
-                        year = bits[0],
-                        detail = bits[1];
-                    nItems++;
-                    list.push({
-                        title: title,
-                        heading: year,
-                        snippet: detail,
-                        image: '',
-                        group: 'On this day',
-                        groupText: mediaWiki.message('section-onthisday').plain(),
-                        style: 'onthisday-item'
-                    });
+                        $link = $li.find('b a');
+                    if ($link.size()) {
+                        // enwiki-style
+                        var title = extractWikiTitle($link.attr('href') + '');
+                        var bits = txt.split(' – '),
+                            year = bits[0],
+                            detail = bits[1];
+                        nItems++;
+                        list.push({
+                            title: title,
+                            heading: year,
+                            snippet: detail,
+                            image: '',
+                            group: 'On this day',
+                            groupText: mediaWiki.message('section-onthisday').plain(),
+                            style: 'onthisday-item'
+                        });
+                    } else {
+                        console.log("Unexpected on-this-day format: " + $li.html());
+                    }
                 });
             }
             completeAnother();
@@ -1274,7 +1279,7 @@
         if (wikiMatches) {
             return decodeURIComponent(wikiMatches[1]).replace(/_/g, ' ');
         } else {
-            throw new Error('not a wiki url');
+            throw new Error('not a wiki url: ' + url);
         }
     }
 
