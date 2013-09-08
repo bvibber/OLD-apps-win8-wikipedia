@@ -66,7 +66,14 @@
     })();
 
     function baseProtocol() {
-        return "https:";
+        if (navigator.userLanguage.match(/zh-CN/)) {
+            // https is blocked in mainland China
+            // we have no login features, so this is probably ok to degrade to http
+            // but... bleah.
+            return 'http:';
+        } else {
+            return "https:";
+        }
     }
 
     function md5(str) {
