@@ -968,12 +968,14 @@
         if (height > image.height) {
             height = image.height;
         }
-        ctx.drawImage(image,
-            // source
-            Math.floor((image.width - width) / 2), Math.floor((image.height - height) / 2), width, height,
-            // dest
-            0, 0, width, height
-        );
+        if (width > 0 && height > 0) {
+            ctx.drawImage(image,
+                // source
+                Math.floor((image.width - width) / 2), Math.floor((image.height - height) / 2), width, height,
+                // dest
+                0, 0, width, height
+            );
+        }
         return canvas.toDataURL();
     }
 
