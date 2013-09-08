@@ -378,3 +378,8 @@ button.show-table {
 
 @media screen and (-ms-view-state: fullscreen-portrait) {
 }
+
+.mw-editsection {
+	display: none;
+}
+
