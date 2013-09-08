@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="WikimediaFoundation.Wikipedia" Version="1.0.0.30" Publisher="CN=2180B9A4-DDFD-4BFD-8D7E-EADC9C394EF5" />
+  <Properties>
+    <DisplayName>Wikipedia</DisplayName>
+    <PublisherDisplayName>Wikimedia Foundation</PublisherDisplayName>
+    <Logo>images\storelogo.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.2.0</OSMinVersion>
+    <OSMaxVersionTested>6.2.0</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="af" />
+    <Resource Language="ar" />
+    <Resource Language="as" />
+    <Resource Language="az-latn" />
+    <Resource Language="be" />
+    <Resource Language="bn" />
+    <Resource Language="ca" />
+    <Resource Language="cs" />
+    <Resource Language="cy" />
+    <Resource Language="da" />
+    <Resource Language="de" />
+    <Resource Language="el" />
+    <Resource Language="en" />
+    <Resource Language="es" />
+    <Resource Language="fa" />
+    <Resource Language="fi" />
+    <Resource Language="fr" />
+    <Resource Language="gd-latn" />
+    <Resource Language="gl" />
+    <Resource Language="gu" />
+    <Resource Language="he" />
+    <Resource Language="hi" />
+    <Resource Language="hu" />
+    <Resource Language="hy" />
+    <Resource Language="id" />
+    <Resource Language="it" />
+    <Resource Language="ja" />
+    <Resource Language="ka" />
+    <Resource Language="kk" />
+    <Resource Language="km" />
+    <Resource Language="kn" />
+    <Resource Language="ko" />
+    <Resource Language="lb" />
+    <Resource Language="lv" />
+    <Resource Language="mk" />
+    <Resource Language="ml" />
+    <Resource Language="mr" />
+    <Resource Language="ms" />
+    <Resource Language="mt" />
+    <Resource Language="nl" />
+    <Resource Language="nn" />
+    <Resource Language="or" />
+    <Resource Language="pa" />
+    <Resource Language="pl" />
+    <Resource Language="pt-br" />
+    <Resource Language="ro" />
+    <Resource Language="ru" />
+    <Resource Language="si" />
+    <Resource Language="sk" />
+    <Resource Language="sq" />
+    <Resource Language="sr-cyrl" />
+    <Resource Language="sr-latn" />
+    <Resource Language="sv" />
+    <Resource Language="ta" />
+    <Resource Language="th" />
+    <Resource Language="tr" />
+    <Resource Language="tt-cyrl" />
+    <Resource Language="ug-arab" />
+    <Resource Language="uk" />
+    <Resource Language="vi" />
+    <Resource Language="zh-Hans" />
+    <Resource Language="zh-Hant" />
+  </Resources>
+  <Applications>
+    <Application Id="App" StartPage="default.html">
+      <VisualElements DisplayName="Wikipedia" Logo="win8-tile.png" SmallLogo="win8-small-tile.png" Description="Wikipedia Mobile for Windows 8" ForegroundText="dark" BackgroundColor="#ffffff">
+        <DefaultTile ShowName="logoOnly" WideLogo="win8-wide-tile.png" />
+        <SplashScreen Image="images\splashscreen.png" />
+      </VisualElements>
+      <Extensions>
+        <Extension Category="windows.search" />
+        <Extension Category="windows.shareTarget" StartPage="target.html">
+          <ShareTarget>
+            <DataFormat>Text</DataFormat>
+          </ShareTarget>
+        </Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>

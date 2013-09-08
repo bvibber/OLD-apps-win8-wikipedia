@@ -1,0 +1,6 @@
+*.suo
+*.user
+bin
+bld
+AppPackages
+Thumbs.db
