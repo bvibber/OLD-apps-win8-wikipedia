@@ -65,6 +65,10 @@
         }
     })();
 
+    function baseProtocol() {
+        return "https:";
+    }
+
     function md5(str) {
         var crypto = Windows.Security.Cryptography,
             buffer = crypto.CryptographicBuffer.convertStringToBinary(str, crypto.BinaryStringEncoding.Utf8),
@@ -156,10 +160,10 @@
                         // Remote or absolute link
                         if (url.match(/^\/\//)) {
                             // fixup for protocol-relative links
-                            url = 'https:' + url;
+                            url = baseProtocol() + url;
                         } else if (url.match(/^\//)) {
                             // fixup for local relative links
-                            url = 'https://' + state.current().lang + '.wikipedia.org' + url;
+                            url = baseProtocol() + '//' + state.current().lang + '.wikipedia.org' + url;
                         }
                         var uri = new Windows.Foundation.Uri(url);
                         Windows.System.Launcher.launchUriAsync(uri);
@@ -371,7 +375,7 @@
     }
 
     function getLanguageLinks(lang, title) {
-        var url = 'https://' + lang + '.wikipedia.org/w/api.php';
+        var url = baseProtocol() + '//' + lang + '.wikipedia.org/w/api.php';
         return new WinJS.Promise(function (complete, error, progress) {
             $.ajax({
                 url: url,
@@ -407,7 +411,7 @@
     }
 
     function getWikiLanguageLinks(lang) {
-        var url = 'https://' + lang + '.wikipedia.org/w/api.php';
+        var url = baseProtocol() + '//' + lang + '.wikipedia.org/w/api.php';
         return new WinJS.Promise(function (complete, error, progress) {
             $.ajax({
                 url: url,
@@ -508,7 +512,7 @@
         var deferral = suggestionRequest.getDeferral();
 
         // This refers to a local package file that contains a sample JSON response. You can update the Uri to a service that supports this standard in order to see suggestions come from a web service.  In order for the updated Uri to work it must also be included in the ApplicationContentUriRules in the manifest
-        var suggestionUri = "https://" + state.current().lang + ".wikipedia.org/w/api.php?action=opensearch&namespace=0&suggest=&search=";
+        var suggestionUri = baseProtcol + "://" + state.current().lang + ".wikipedia.org/w/api.php?action=opensearch&namespace=0&suggest=&search=";
         // If you are using a webservice,the query string should be encoded into the URI. See example below:
         suggestionUri += encodeURIComponent(queryText);
 
@@ -562,7 +566,7 @@
         $('#reader').hide();
         $('#search').show();
         $('#title').text(query);
-        var url = 'https://' + lang + '.wikipedia.org/w/api.php';
+        var url = baseProtocol() + '//' + lang + '.wikipedia.org/w/api.php';
         $('#spinner').show();
         $.ajax({
             url: url,
@@ -631,7 +635,7 @@
 
         $('#spinner').show();
         $.ajax({
-            url: 'https://' + lang + '.wikipedia.org/w/api.php',
+            url: baseProtocol() + '//' + lang + '.wikipedia.org/w/api.php',
             data: {
                 action: 'mobileview',
                 page: title,
@@ -739,7 +743,7 @@
         if (typeof lang != 'string') {
             throw new Error('bad lang input to articleUrl');
         }
-        return 'https://' + lang + '.wikipedia.org';
+        return baseProtocol() + '//' + lang + '.wikipedia.org';
       }
 
     function articleUrl(lang, title) {
@@ -749,7 +753,7 @@
         if (typeof lang != 'string') {
             throw new Error('bad lang input to articleUrl');
         }
-        return 'https://' + lang + '.wikipedia.org/wiki/' + encodeURIComponent(title.replace(/ /g, '_'));
+        return baseProtocol() + '//' + lang + '.wikipedia.org/wiki/' + encodeURIComponent(title.replace(/ /g, '_'));
     }
 
 
@@ -767,7 +771,7 @@
     }
     function fetchFeed(lang, feed, callback) {
         $.ajax({
-            url: "https://" + lang + ".wikipedia.org/w/api.php",
+            url: baseProtocol() + "//" + lang + ".wikipedia.org/w/api.php",
             data: {
                 action: 'featuredfeed',
                 feed: feed,
@@ -806,7 +810,7 @@
             var $img = $(this),
                 src = $img.attr('src');
             if (src.substr(0, 2) == '//') {
-                $img.attr('src', 'https:' + src);
+                $img.attr('src', baseProtocol() + src);
             }
         });
         $div.find('table').each(function () {
@@ -876,7 +880,7 @@
 
     function getMainPage(lang) {
         return new WinJS.Promise(function (complete, error, progress) {
-            var url = 'https://' + lang + '.wikipedia.org/w/api.php';
+            var url = baseProtocol() + '//' + lang + '.wikipedia.org/w/api.php';
             $.ajax({
                 url: url,
                 data: {
@@ -904,7 +908,7 @@
 
     function getRecentChanges(lang) {
         return new WinJS.Promise(function (complete, error, progress) {
-            var url = 'https://' + lang + '.wikipedia.org/w/api.php';
+            var url = baseProtocol() + '//' + lang + '.wikipedia.org/w/api.php';
             $.ajax({
                 url: url,
                 data: {
@@ -1035,7 +1039,7 @@
                 if ($imgs.length) {
                     image = $imgs.attr('src');
                     if (image.substr(0, 2) == '//') {
-                        image = 'https:' + image;
+                        image = baseProtocol() + image;
                     }
                     image = largeImage(image);
                 } else {
@@ -1095,7 +1099,7 @@
                 if ($imgs.length) {
                     image = $imgs.attr('src');
                     if (image.substr(0, 2) == '//') {
-                        image = 'https:' + image;
+                        image = baseProtocol() + image;
                     }
                     image = image;
                     var width = parseFloat($imgs.attr('width')),
@@ -1285,7 +1289,7 @@
 
     function showImage(lang, title) {
         $.ajax({
-            url: 'https://' + lang + '.wikipedia.org/w/api.php',
+            url: baseProtocol() + '//' + lang + '.wikipedia.org/w/api.php',
             data: {
                 action: 'query',
                 titles: title,
