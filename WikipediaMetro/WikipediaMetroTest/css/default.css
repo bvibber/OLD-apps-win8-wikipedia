@@ -18,6 +18,11 @@
     left: 50px;
     top:  50px;
 }
+#searchBox {
+    position: absolute;
+    right: 50px;
+    top: 50px;
+}
 .win-appbar, #find-bar {
     background-color: #f4f1f1;
     border-top: solid 1px #b8b8b8;

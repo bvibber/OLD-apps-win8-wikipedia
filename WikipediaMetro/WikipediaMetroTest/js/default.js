@@ -137,6 +137,7 @@
                 }
 
                 initHub(getLanguage());
+                setupSearch();
                 // Handler for links!
                 $(document).on('click', 'a', function (event) {
                     var url = $(this).attr('href'),
@@ -345,7 +346,7 @@
                     $('#find-bar').show();
 
                     // Have to disable app-wide search to input here
-                    Windows.ApplicationModel.Search.SearchPane.getForCurrentView().showOnKeyboardInput = false;
+                   // Windows.ApplicationModel.Search.SearchPane.getForCurrentView().showOnKeyboardInput = false;
                     range = document.body.createTextRange();
                     range.moveToElementText(reader);
                     range.collapse();
@@ -372,7 +373,7 @@
                 });
                 $('#find-close').click(function () {
                     $('#find-bar').hide();
-                    Windows.ApplicationModel.Search.SearchPane.getForCurrentView().showOnKeyboardInput = true;
+                   // Windows.ApplicationModel.Search.SearchPane.getForCurrentView().showOnKeyboardInput = true;
                 });
 
                 beenInitialized = true;
@@ -502,54 +503,51 @@
     };
     app.start();
 
-    // Obtain the Search Pane object and register for handling search while running as the main application
-    var searchPane = Windows.ApplicationModel.Search.SearchPane.getForCurrentView();
-    searchPane.showOnKeyboardInput = true;
-    searchPane.addEventListener("querysubmitted", function (e) {
-        console.log('querysubmitted', e);
-        doLoadPage(state.current().lang, e.queryText);
-    });
-    var request;
-    // Register to Handle Suggestion Request
-    searchPane.addEventListener("suggestionsrequested", function (e) {
-        console.log('suggestionsrequested', e);
-        var suggestionRequest = e.request,
-            queryText = e.queryText;
-        // Indicate that we'll obtain suggestions asynchronously:
-        var deferral = suggestionRequest.getDeferral();
-
-        // This refers to a local package file that contains a sample JSON response. You can update the Uri to a service that supports this standard in order to see suggestions come from a web service.  In order for the updated Uri to work it must also be included in the ApplicationContentUriRules in the manifest
-        var suggestionUri = baseProtcol + "://" + state.current().lang + ".wikipedia.org/w/api.php?action=opensearch&namespace=0&suggest=&search=";
-        // If you are using a webservice,the query string should be encoded into the URI. See example below:
-        suggestionUri += encodeURIComponent(queryText);
-
-        // Cancel the previous suggestion request if it is not finished
-        if (request && request.abort) {
-            request.abort();
-        }
-
-        // Create request to obtain suggestions from service and supply them to the Search Pane
-        $.ajax({
-            url: suggestionUri,
-            success: function(data, textstatus, request) {
-                if (data && data instanceof Array) {
-                    var suggestions = data[1];
-                    if (suggestions) {
-                        suggestionRequest.searchSuggestionCollection.appendQuerySuggestions(suggestions);
-                        console.log("Suggestions provided for query: " + queryText);
-                    } else {
-                        console.log("No suggestions provided for query: " + queryText);
-                    }
-                }
-                deferral.complete(); // Indicate we're done supplying suggestions.
-            }
+    function setupSearch() {
+        // Obtain the Search Pane object and register for handling search while running as the main application
+        var searchBox = document.getElementById('searchBox').winControl;
+        searchBox.addEventListener("querysubmitted", function (e) {
+            doLoadPage(state.current().lang, e.detail.queryText);
         });
-    });
-    // Handle the selection of a Result Suggestion for Scenario 6
-    searchPane.addEventListener("resultsuggestionchosen", function (e) {
-        console.log('search', e);
-        doLoadPage(state.current().lang, e.queryText);
-    });
+        var request;
+        // Register to Handle Suggestion Request
+        searchBox.addEventListener("suggestionsrequested", function (e) {
+            e.detail.setPromise(new WinJS.Promise(function (completeDispatch, errorDispatch, progressDispatch) {
+
+                // This refers to a local package file that contains a sample JSON response. You can update the Uri to a service that supports this standard in order to see suggestions come from a web service.  In order for the updated Uri to work it must also be included in the ApplicationContentUriRules in the manifest
+                var suggestionUri = baseProtocol() + "//" + state.current().lang + ".wikipedia.org/w/api.php?action=opensearch&namespace=0&suggest=&search=";
+                // If you are using a webservice,the query string should be encoded into the URI. See example below:
+                suggestionUri += encodeURIComponent(e.detail.queryText);
+
+                // Cancel the previous suggestion request if it is not finished
+                if (request && request.abort) {
+                    request.abort();
+                }
+
+                // Create request to obtain suggestions from service and supply them to the Search Pane
+                $.ajax({
+                    url: suggestionUri,
+                    success: function (data, textstatus, request) {
+                        if (data && data instanceof Array) {
+                            var suggestions = data[1];
+                            if (suggestions) {
+                                e.detail.searchSuggestionCollection.appendQuerySuggestions(suggestions);
+                            }
+                        }
+                        completeDispatch();
+                    },
+                    error: function (err) {
+                        errorDispatch(new WinJS.ErrorFromName("Fetch error", err));
+                    }
+                });
+            }));
+        });
+        // Handle the selection of a Result Suggestion for Scenario 6
+        searchBox.addEventListener("resultsuggestionchosen", function (e) {
+            console.log('search', e);
+            doLoadPage(state.current().lang, e.detail.queryText);
+        });
+    }
 
     function stripHtmlTags(html) {
         if (typeof html !== 'string') {
