@@ -1,5 +1,7 @@
 ﻿body {
     overflow: hidden;
+    width: 100%;
+    height: 100%;
 }
 .header {
     height:  120px;
@@ -342,10 +344,31 @@ button.show-table {
 
 @media all and (min-width: 641px) {
     /* Fullscreen or most of screen */
+    #content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        overflow-x: scroll !important;
+        overflow-y: hidden;
+    }
     #subcontent {
+        /*
         column-width: 280px;
         column-gap: 20px;
         column-fill: auto;
+        */
+    }
+    .subsection {
+        overflow-y: scroll !important;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 360px;
+        height: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
     }
     #content[dir=ltr] #subcontent {
         /* Padding for the left end of the screen */
@@ -360,9 +383,11 @@ button.show-table {
 }
 @media all and (max-width: 640px) {
     /* Snapped */
-    #content {
-        overflow-x: visible !important; /* override the scroller */
-        overflow-y: scroll !important;
+    .subsection {
+        overflow: hidden !important;
+        position: relative;
+        left: 0 !important;
+        top: 0 !important;
     }
     #subcontent {
         padding: 10px 20px;

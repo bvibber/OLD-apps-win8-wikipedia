@@ -62,25 +62,10 @@
                 <h4 data-win-bind="innerText: title; className: style"></h4>
             </div>
         </div>
-        <div id="semanticZoomer"
-            data-win-control="WinJS.UI.SemanticZoom"
-            data-win-options="{ zoomFactor: 0.5, initiallyZoomedOut: false }"
-            style="height: 600px"
-        >
-            <div id="content"
-                data-win-control="WikiControls.WikiView"
-                data-win-options="{}"
-            ></div>
-            <div id="toc"
-                data-win-control="WinJS.UI.ListView"
-                data-win-options="{
-                    itemDataSource : TocSections.itemList.dataSource,
-                    itemTemplate: select('#tocItemTemplate'),
-                    selectionMode: 'none',
-                    swipeBehavior: 'none'
-                }">
-            </div>
-        </div>
+        <div id="content"
+            data-win-control="WikiControls.WikiView"
+            data-win-options="{}"
+        ></div>
     </div>
     <div class="page" id="search">
         <div id="search-results">

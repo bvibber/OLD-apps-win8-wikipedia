@@ -680,7 +680,11 @@
                     if (!section.text) {
                         return;
                     }
-                    var div = insertWikiHtml('#subcontent', section.text);
+                    var $subsection = $('<div>').addClass('subsection');
+                    var div = insertWikiHtml($subsection, section.text);
+                    $subsection
+                        .css('left', (section.id * 400) + 'px')
+                        .appendTo('#subcontent');
                     if (section.id == 0) {
                         TocSections.itemList.push({
                             title: title.replace(/_/g, ' '),
@@ -696,7 +700,7 @@
                         });
                     }
                 });
-                $('#subcontent').append('<div class="column-spacer"></div>');
+                //$('#subcontent').append('<div class="column-spacer"></div>');
                 WinJS.UI.Animation.enterPage($('#content')[0], 40).done(function () {
                     // Set focus to allow keyboard scrolling
                     $('#content').focus();
@@ -1227,14 +1231,12 @@
         // Hack to swap orientation in snapped or share mode
         if (window.innerWidth <= 640) {
             // Snapped
-            $('#toc')[0].winControl.layout = new WinJS.UI.ListLayout();
             $('#hub-list')[0].winControl.layout = new WinJS.UI.ListLayout({
                 groupInfo: groupInfo
             });
             $('#content').scrollLeft(0); // avoid being scrolled off into nothingness
         } else {
             // Not snapped
-            $('#toc')[0].winControl.layout = new WinJS.UI.GridLayout();
             $('#hub-list')[0].winControl.layout = new WinJS.UI.GridLayout({
                 groupInfo: groupInfo
             });
@@ -1244,9 +1246,6 @@
         var h = $(window).height() - top;
         if ($('#hub').is(':visible')) {
             $('#hub-list').css('height', (h + 20) + 'px');
-        } else {
-            $('#semanticZoomer').css('height', h + 'px')
-            $('#subcontent').css('height', (h - 80) + 'px');
         }
 
         // Size header to fit
