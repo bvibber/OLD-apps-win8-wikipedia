@@ -1227,7 +1227,7 @@
         var $work, fudge;
 
         // Hack to swap orientation in snapped or share mode
-        if (window.innerWidth <= 700) {
+        if (window.innerWidth <= 640) {
             // Snapped
             $('#toc')[0].winControl.layout = new WinJS.UI.ListLayout();
             $('#hub-list')[0].winControl.layout = new WinJS.UI.ListLayout({

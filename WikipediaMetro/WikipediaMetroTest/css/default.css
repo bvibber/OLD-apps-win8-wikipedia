@@ -335,7 +335,7 @@ button.show-table {
     padding-top: 20px;
 }
 
-@media all and (min-width: 321px) {
+@media all and (min-width: 641px) {
     /* Fullscreen or most of screen */
     #subcontent {
         column-width: 280px;
@@ -353,30 +353,19 @@ button.show-table {
         width: 400px;
     }
 }
-@media all and (max-width: 320px) {
+@media all and (max-width: 640px) {
     /* Snapped */
     #content {
-        padding: 10px 20px;
-        width: 280px !important;
         overflow-x: visible !important; /* override the scroller */
         overflow-y: scroll !important;
+    }
+    #subcontent {
+        padding: 10px 20px;
     }
     .lightbox-fg {
         left: 10px;
         right: 10px;
     }
-}
-
-@media screen and (-ms-view-state: fullscreen-landscape) {
-}
-
-@media screen and (-ms-view-state: filled) {
-}
-
-@media screen and (-ms-view-state: snapped) {
-}
-
-@media screen and (-ms-view-state: fullscreen-portrait) {
 }
 
 .mw-editsection {
