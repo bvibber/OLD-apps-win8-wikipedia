@@ -31,29 +31,31 @@
     </div>
     <progress id="spinner"></progress>
     <div class="hub" id="hub">
-        <div id="hubItemTemplate" data-win-control="WinJS.Binding.Template">
-            <div data-win-bind="className: style">
-                <img src="#" data-win-bind="src: image" />
-                <h5 data-win-bind="innerText: heading"></h5>
-                <h6 data-win-bind="innerText: snippet"></h6>
-                <h4 data-win-bind="innerText: title" style="font-weight: bold"></h4>
+        <div class="hub-column" id="hub-potd">
+            <h2><a id="hub-potd">Picture of the Day ></a></h2>
+            <div class="hub-box">
+                <div class="extract"></div>
+                <div class="title"></div>
             </div>
         </div>
-        <div id="headerTemplate" data-win-control="WinJS.Binding.Template" style="display: none">
-            <div class="simpleHeaderItem">
-                <h2 data-win-bind="innerText: title"></h2>
+        <div class="hub-column" id="hub-featured">
+            <h2><a id="hub-featured-more">Featured articles ></a></h2>
+            <div class="hub-box">
+                <div class="extract"></div>
+                <div class="title"></div>
             </div>
         </div>
-        <div id="hub-list"
-            data-win-control="WinJS.UI.ListView"
-            data-win-options="{
-                itemDataSource: HubContents.groupedList.dataSource,
-                itemTemplate: select('#hubItemTemplate'),
-                groupHeaderTemplate: headerTemplate,
-                selectionMode: 'none',
-                swipeBehavior: 'none',
-                groupDataSource: HubContents.groupedList.groups.dataSource
-            }">
+        <div class="hub-column" id="hub-onthisday">
+            <h2><a id="hub-onthisday-more">On this day ></a></h2>
+            <div class="hub-list">
+            </div>
+        </div>
+        <div class="hub-column" id="hub-didyouknow">
+            <h2><a id="hub-onthisday-didyouknow">Did you know? ></a></h2>
+            <div class="hub-list"></div>
+        </div>
+        <div class="hub-column" id="hub-recentchanges">
+            <div class="hub-list"></div>
         </div>
     </div>
     <div class="page" id="reader">

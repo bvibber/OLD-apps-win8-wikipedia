@@ -52,6 +52,37 @@
 .win-listview {
     height: 600px;
 }
+
+#hub {
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    
+    display: -ms-flexbox;
+}
+#hub div {
+    white-space: normal;
+}
+.hub-column {
+}
+.hub-box {
+    width: 960px;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.hub-list {
+    width: 480px;
+}
+
 #hub-list .win-listview {
     margin-bottom: 50px;
 }

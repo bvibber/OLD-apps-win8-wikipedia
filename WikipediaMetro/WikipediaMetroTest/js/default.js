@@ -990,23 +990,14 @@
         doShowHub(lang);
 
         // Empty any old contents
-        var list = HubContents.itemList;
-        list.splice(0, list.length);
+//        var list = HubContents.itemList;
+//        list.splice(0, list.length);
 
         var pings = 4, nErrors = 0, nItems = 0;
         var completeAnother = function () {
             pings--;
             if (pings == 0) {
                 $('#spinner').hide();
-                list.push({
-                    title: '',
-                    heading: '',
-                    snippet: '',
-                    image: '#',
-                    group: 'Spacer',
-                    groupText: ' ',
-                    style: 'spacer-item'
-                });
                 console.log('errors: ' + nErrors);
                 if (nErrors) {
                     $('#offline').show();
@@ -1023,12 +1014,13 @@
             }
             var html;
             if (htmlList.length) {
+                var html = toStaticHTML(htmlList[0]);
+
+                // Update our live tile with the current featured article
                 var txt = stripHtmlTags(htmlList[0]);
                 updateLiveTile(mediaWiki.message('win8-tile-featured-article').plain(), txt);
-            }
-            htmlList.slice(0, 8).forEach(function (html, index) {
-                // Filter for safety
-                html = toStaticHTML(html);
+
+                // Prepare a nice big box
                 var $html = $('<div>').html(html),
                     $links = $html.find('a'),
                     $imgs = $html.find('img'),
@@ -1048,37 +1040,25 @@
                     if (image.substr(0, 2) == '//') {
                         image = baseProtocol() + image;
                     }
+                    $imgs.remove();
                     image = largeImage(image);
                 } else {
                     image = '/images/secondary-tile.png';
                 }
-                nItems++;
-                var listItem = {
-                    title: title,
-                    heading: '',
-                    snippet: stripHtmlTags(html).substr(0, 100) + '...',
-                    image: '#',
-                    group: 'Featured articles',
-                    groupText: mediaWiki.message('section-featured-articles').plain(),
-                    style: (index < 1) ? 'featured-item large' : 'featured-item'
-                };
-                list.push(listItem);
-                var preload = new Image();
-                preload.src = image;
-                preload.onload = function () {
-                    var squared = makeSquareImage(preload);
-                    listItem.image = squared;
-                    document.getElementById('hub-list').winControl.forceLayout();
-                };
-            });
+                $('#hub-featured .extract').append($html);
+                $('#hub-featured .title').text(title);
+                $('#hub-featured .hub-box')
+                    .css('background-image', 'url(' + image + ')');
+            } else {
+                $('#hub-featured').hide();
+            }
             completeAnother();
         });
         fetchFeed(lang, 'potd', function (htmlList, err) {
             if (err) {
                 nErrors++;
             }
-            $('#spinner').hide();
-            htmlList.slice(0, 6).forEach(function (html, index) {
+            htmlList.slice(0, 1).forEach(function (html, index) {
                 // Filter for safety
                 html = toStaticHTML(html);
                 var $html = $('<div>').html(html),
@@ -1108,58 +1088,13 @@
                     if (image.substr(0, 2) == '//') {
                         image = baseProtocol() + image;
                     }
+                    $imgs.remove();
                     image = image;
-                    var width = parseFloat($imgs.attr('width')),
-                        height = parseFloat($imgs.attr('height'));
-                    if (index == 0) {
-                        image = largeImage(image);
-                        width *= 2;
-                        height *= 2;
-                        var aspect = width / height;
-                        if (aspect > (3 / 2)) {
-                            // wider than 3:2
-                            imageHeight = height;
-                            imageWidth = Math.floor(height * 3 / 2);
-                            imageStyle = 'wide';
-                        } else if (aspect >= 1 && aspect <= (3 / 2)) {
-                            // between 1:1 and 3:2
-                            imageWidth = width;
-                            imageHeight = Math.floor(width * 2 / 3);
-                            imageStyle = 'wide';
-                        } else if (aspect < 1 && aspect >= (2 / 3)) {
-                            // between 2:3 and 1:1
-                            imageWidth = Math.floor(width * 2 / 3);
-                            imageHeight = height;
-                            imageStyle = 'tall';
-                        } else {
-                            // taller than 2:3
-                            imageWidth = width;
-                            imageHeight = Math.floor(width * 3 / 2);
-                            imageStyle = 'tall';
-                        }
-                    } else {
-                        imageWidth = Math.min(width, height);
-                        imageHeight = Math.min(width, height);
-                    }
+                    $('#hub-potd .extract').append($html);
+                    $('#hub-potd .title').text(title);
+                    $('#hub-potd .hub-box')
+                        .css('background-image', 'url(' + image + ')');
                 }
-                nItems++;
-                var listItem = {
-                    title: title,
-                    heading: '',
-                    snippet: '',
-                    image: '#',
-                    group: 'Featured pictures',
-                    groupText: mediaWiki.message('section-featured-pictures').plain(),
-                    style: (index == 0) ? ('photo-item large ' + imageStyle) : 'photo-item'
-                };
-                list.push(listItem);
-                var preload = new Image();
-                preload.src = image;
-                preload.onload = function () {
-                    var fit = makeFitImage(preload, imageWidth, imageHeight);
-                    listItem.image = fit;
-                    document.getElementById('hub-list').winControl.forceLayout();
-                };
             });
             completeAnother();
         });
@@ -1169,33 +1104,10 @@
             }
             if (htmlList.length) {
                 // Filter for safety
-                var html = toStaticHTML(htmlList[0]),
-                    $html = $('<div>').html(html),
-                    $lis = $html.find('li');
-                $lis.each(function () {
-                    var $li = $(this),
-                        txt = stripHtmlTags($li.html()),
-                        $link = $li.find('b a');
-                    if ($link.size()) {
-                        // enwiki-style
-                        var title = extractWikiTitle($link.attr('href') + '');
-                        var bits = txt.split(' – '),
-                            year = bits[0],
-                            detail = bits[1];
-                        nItems++;
-                        list.push({
-                            title: title,
-                            heading: year,
-                            snippet: detail,
-                            image: '',
-                            group: 'On this day',
-                            groupText: mediaWiki.message('section-onthisday').plain(),
-                            style: 'onthisday-item'
-                        });
-                    } else {
-                        console.log("Unexpected on-this-day format: " + $li.html());
-                    }
-                });
+                var html = toStaticHTML(htmlList[0]);
+                $('#hub-onthisday .hub-list').html(html);
+            } else {
+                $('#hub-onthisday').hide();
             }
             completeAnother();
         });
@@ -1206,6 +1118,7 @@
             recentchanges.forEach(function (change) {
                 if (change.ns == 0 && change.type == 'edit') {
                     nItems++;
+                    /*
                     list.push({
                         title: change.title,
                         heading: '',
@@ -1215,6 +1128,7 @@
                         groupText: mediaWiki.message('section-recentchanges').plain(),
                         style: 'featured-item'
                     });
+                    */
                 }
             });
             completeAnother();
@@ -1228,16 +1142,10 @@
         if (window.innerWidth <= 640) {
             // Snapped
             $('#toc')[0].winControl.layout = new WinJS.UI.ListLayout();
-            $('#hub-list')[0].winControl.layout = new WinJS.UI.ListLayout({
-                groupInfo: groupInfo
-            });
             $('#content').scrollLeft(0); // avoid being scrolled off into nothingness
         } else {
             // Not snapped
             $('#toc')[0].winControl.layout = new WinJS.UI.GridLayout();
-            $('#hub-list')[0].winControl.layout = new WinJS.UI.GridLayout({
-                groupInfo: groupInfo
-            });
         }
 
         var top = 150;
