@@ -519,7 +519,7 @@
         var deferral = suggestionRequest.getDeferral();
 
         // This refers to a local package file that contains a sample JSON response. You can update the Uri to a service that supports this standard in order to see suggestions come from a web service.  In order for the updated Uri to work it must also be included in the ApplicationContentUriRules in the manifest
-        var suggestionUri = baseProtcol + "://" + state.current().lang + ".wikipedia.org/w/api.php?action=opensearch&namespace=0&suggest=&search=";
+        var suggestionUri = baseProtocol() + "//" + state.current().lang + ".wikipedia.org/w/api.php?action=opensearch&namespace=0&suggest=&search=";
         // If you are using a webservice,the query string should be encoded into the URI. See example below:
         suggestionUri += encodeURIComponent(queryText);
 
