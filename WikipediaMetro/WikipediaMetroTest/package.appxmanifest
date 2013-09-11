@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="WikimediaFoundation.Wikipedia" Version="1.0.0.30" Publisher="CN=2180B9A4-DDFD-4BFD-8D7E-EADC9C394EF5" />
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
+  <Identity Name="WikimediaFoundation.Wikipedia" Version="1.1.0.30" Publisher="CN=2180B9A4-DDFD-4BFD-8D7E-EADC9C394EF5" />
   <Properties>
     <DisplayName>Wikipedia</DisplayName>
     <PublisherDisplayName>Wikimedia Foundation</PublisherDisplayName>
     <Logo>images\storelogo.png</Logo>
   </Properties>
   <Prerequisites>
-    <OSMinVersion>6.2.0</OSMinVersion>
-    <OSMaxVersionTested>6.2.0</OSMaxVersionTested>
+    <OSMinVersion>6.3.0</OSMinVersion>
+    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
   </Prerequisites>
   <Resources>
     <Resource Language="af" />
@@ -76,10 +76,6 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <VisualElements DisplayName="Wikipedia" Logo="win8-tile.png" SmallLogo="win8-small-tile.png" Description="Wikipedia Mobile for Windows 8" ForegroundText="dark" BackgroundColor="#ffffff">
-        <DefaultTile ShowName="logoOnly" WideLogo="win8-wide-tile.png" />
-        <SplashScreen Image="images\splashscreen.png" />
-      </VisualElements>
       <Extensions>
         <Extension Category="windows.search" />
         <Extension Category="windows.shareTarget" StartPage="target.html">
@@ -88,6 +84,14 @@
           </ShareTarget>
         </Extension>
       </Extensions>
+      <m2:VisualElements DisplayName="Wikipedia" Description="Wikipedia Mobile for Windows 8" BackgroundColor="#ffffff" ForegroundText="dark" Square150x150Logo="win8-tile.png" Square30x30Logo="win8-small-tile.png">
+        <m2:DefaultTile Wide310x150Logo="win8-wide-tile.png">
+          <m2:ShowNameOnTiles>
+            <m2:ShowOn Tile="square150x150Logo" />
+          </m2:ShowNameOnTiles>
+        </m2:DefaultTile>
+        <m2:SplashScreen Image="images\splashscreen.png" />
+      </m2:VisualElements>
     </Application>
   </Applications>
   <Capabilities>
