@@ -102,6 +102,11 @@
         return navigator.userLanguage.replace(/-.*$/, '');
     }
 
+    function getVersion() {
+        var ver = Windows.ApplicationModel.Package.current.id.version;
+        return [ ver.major, ver.minor, ver.build, ver.revision ].join('.');
+    }
+
     var beenInitialized = false;
     function setupApp() {
         return new WinJS.Promise(function (complete, error, prog) {
@@ -109,6 +114,10 @@
                 complete();
                 return;
             }
+
+            $.ajaxSetup({
+                headers: { 'X-Analytics': 'app=WikipediaMetroTest; ver=' + getVersion() }
+            });
 
             $(document).bind('mw-messages-ready', function () {
                 WinJS.UI.processAll().done(doStuff);
